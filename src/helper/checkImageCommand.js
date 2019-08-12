@@ -2,6 +2,7 @@ const { MessageEmbed } = require('discord.js');
 const Directory = require('@/model/directory');
 const Image = require('@/model/image');
 const COLOR = require('@/constants/color');
+const { RANDOM } = require('@/constants/commands/stamp');
 
 module.exports = async (bot, msg) => {
 	if (!msg.guild) return;
@@ -12,11 +13,23 @@ module.exports = async (bot, msg) => {
 	const fileName = msgSplitted[1];
 
 	if (dirName && !fileName) {
-		const image = await Image.findOne({
-			name: dirName,
-			dirId: 0,
-			guildId,
-		}).exec();
+		const name = dirName;
+		const image = name === RANDOM.CMD
+			?	await Image.find({
+				dirId: 0,
+				guildId,
+			}).countDocuments().exec().then(async count => {
+				const index = Math.floor(Math.random() * count);
+				return await Image.findOne({
+					dirId: 0,
+					guildId,
+				}).skip(index).exec();
+			})
+			: await Image.findOne({
+				name,
+				dirId: 0,
+				guildId,
+			}).exec();
 		if (!image) return;
 
 		msg.channel.send(
@@ -32,10 +45,19 @@ module.exports = async (bot, msg) => {
 		}).exec();
 		if (!directory) return;
 
-		const image = await Image.findOne({
-			name: fileName,
-			dirId: directory._id,
-		}).exec();
+		const image = fileName === RANDOM.CMD
+			? await Image.find({
+				dirId: directory._id,
+			}).countDocuments().exec().then(async count => {
+				const index = Math.floor(Math.random() * count);
+				return await Image.findOne({
+					dirId: directory._id,
+				}).skip(index).exec();
+			})
+			: await Image.findOne({
+				name: fileName,
+				dirId: directory._id,
+			}).exec();
 		if (!image) return;
 
 		msg.channel.send(

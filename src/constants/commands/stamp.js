@@ -26,4 +26,7 @@ module.exports = {
 			IMAGE: EMOJI.PICTURE,
 		},
 	},
+	RANDOM: {
+		CMD: '랜덤',
+	},
 };
