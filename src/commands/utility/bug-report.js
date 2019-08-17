@@ -13,7 +13,7 @@ module.exports = {
 	hidden: false,
 	devOnly: false,
 	permissions: [],
-	cooldown: COOLDOWN.PER_USER(30),
+	cooldown: COOLDOWN.PER_USER(5),
 	execute: async ({ bot, msg, author, channel, guild, content }) => {
 		if (!content) {
 			msg.error(ERROR.CMD.EMPTY_CONTENT(BUG_REPORT.TARGET));
@@ -34,7 +34,7 @@ module.exports = {
 
 		embed.title = undefined;
 		embed.setAuthor(`${author.user.username}(${author.user.id})`, author.user.avatarURL());
-		embed.setFooter(`${guild.name}(${guild.id})`, guild.iconURL());
+		embed.setFooter(`${guild.name}(${guild.id}/${channel.id})`, guild.iconURL());
 
 		await bugChannel.send(embed);
 		channel.send(BUG_REPORT.MSG_SUCCESS);
