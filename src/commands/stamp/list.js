@@ -39,6 +39,11 @@ module.exports = {
 			};
 		});
 		const items = [...directories, ...images];
+		if (items.length <= 0) {
+			msg.error(ERROR.CMD.NOT_FOUND('등록된 폴더랑 이미지'));
+			return;
+		}
+
 		const pageCnt = Math.ceil(items.length / LIST.ITEM_PER_PAGE);
 		const recital = new Recital(bot, msg);
 		const pages = [...Array(pageCnt)].map((_, idx) => idx).map(pageIdx =>{
