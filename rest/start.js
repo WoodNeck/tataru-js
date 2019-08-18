@@ -325,7 +325,7 @@ module.exports = bot => {
 			return res.status(402).send('이미지를 가져오는 중에 오류가 발생했습니다.');
 		}
 		if (images.some(image => !image)) {
-			return res.status(404).send('이미가 존재하지 않습니다.');
+			return res.status(404).send('이미지가 존재하지 않습니다.');
 		}
 		const names = images.map(image => image.name);
 		const exists = await Promise.all(names.map(name => Image.findOne({ name: name, dirId }).exec()))
@@ -417,6 +417,7 @@ module.exports = bot => {
 	 *
 	 * @query
 	 * guild - guild.id
+	 * directory - directory.id
 	 * user - user.id
 	 * image - image.id
 	 * name - new image name
@@ -430,9 +431,9 @@ module.exports = bot => {
 	 * 404 - File not exists
 	 */
 	app.patch(URL.IMAGE, async (req, res) => {
-		const { guild: guildId, user: userId, image: imageId, name } = req.body;
+		const { guild: guildId, directory: dirId, user: userId, image: imageId, name } = req.body;
 
-		if (!guildId || !userId || !imageId || !name) {
+		if (!guildId || !userId || !dirId || !imageId || !name) {
 			return res.status(400).send('인자가 잘못되었습니다.');
 		}
 		const newName = name.trim();
@@ -444,7 +445,7 @@ module.exports = bot => {
 			return res.status(401).send('길드에 스탬프관리 권한이 없습니다.');
 		}
 
-		const alreadyExists = await Image.findOne({ name: newName, guildId }).exec();
+		const alreadyExists = await Image.findOne({ name: newName, dirId, guildId }).exec();
 		if (alreadyExists) {
 			return res.status(301).send('이미 동일한 이름의 파일이 존재합니다.');
 		}
