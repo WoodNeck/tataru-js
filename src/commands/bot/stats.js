@@ -28,6 +28,7 @@ module.exports = {
 		if (content) {
 			const cmd = await Command.findOne({
 				name: content,
+				time: undefined,
 			}).exec();
 
 			if (!cmd) {
@@ -43,7 +44,7 @@ module.exports = {
 		}
 		// All command check
 		else {
-			const commands = await Command.find()
+			const commands = await Command.find({ time: undefined })
 				.sort({ callCount: -1 })
 				.exec();
 
