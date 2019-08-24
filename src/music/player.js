@@ -12,6 +12,7 @@ module.exports = class Player {
 		this._connection = voiceConnection;
 		this._queue = [];
 		this._loop = false;
+		this._outOnFinish = true;
 		this._state = PLAYER_STATE.INIT;
 	}
 
@@ -104,9 +105,10 @@ module.exports = class Player {
 	}
 	get state() { return this._state; }
 	get loop() { return this._loop; }
-	set loop(val) {
-		this._loop = val;
-	}
+	get outOnFinish() { return this._outOnFinish; }
+
+	set loop(val) { this._loop = val; }
+	set outOnFinish(val) { this._outOnFinish = val; }
 
 	async _playNextSong() {
 		this._state = PLAYER_STATE.PREPARING;
@@ -123,7 +125,7 @@ module.exports = class Player {
 
 			this._queue.length > 0
 				? setImmediate(() => this._playNextSong())
-				: this.end();
+				: this._outOnFinish && this.end();
 		};
 
 		const stream = await song.createStream()

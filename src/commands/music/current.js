@@ -20,6 +20,11 @@ module.exports = {
 			return;
 		}
 		const player = bot.players.get(guild.id);
+		if (player.queue.length <= 0) {
+			msg.error(ERROR.MUSIC.NO_SONGS_AVAILABLE);
+			return;
+		}
+
 		const song = player.currentSong;
 		const progressed = player.time;
 		const statusEmoji = PLAYER_STATE_EMOJI[player.state];

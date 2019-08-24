@@ -67,6 +67,7 @@ module.exports = {
 		NO_VOICE_CHANNEL_IN: '들어가있는 음성 채널이 없다냥!',
 		NO_PLAYERS_AVAILABLE: '이 서버에는 재생중인 음악이 없다냥!',
 		NO_PERMISSION_GRANTED: '음성채널에 접속하기 위한 권한이 없다냥!',
+		NO_SONGS_AVAILABLE: '곡이 하나도 없다냥!',
 		VOICE_CHANNEL_IS_FULL: '음성채널에 들어갈 자리가 없다냥!',
 		VOICE_CONNECTION_HAD_ERROR: '음성채널 연결중에 오류가 발생했다냥!',
 		VOICE_CONNECTION_JOIN_FAILED: '음성채널 연결에 실패했다냥!',

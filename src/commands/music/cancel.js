@@ -27,6 +27,10 @@ module.exports = {
 			return;
 		}
 		const indexToRemove = parseInt(args[0], 10);
+		if (player.queue.length <= 0) {
+			msg.error(ERROR.MUSIC.NO_SONGS_AVAILABLE);
+			return;
+		}
 		if (indexToRemove <= 0 || indexToRemove > player.queue.length) {
 			msg.error(ERROR.MUSIC.PLAYLIST_INDEX_OUT_OF_RANGE(1, player.queue.length));
 			return;

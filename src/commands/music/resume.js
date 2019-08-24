@@ -15,6 +15,11 @@ module.exports = {
 			return;
 		}
 		const player = bot.players.get(guild.id);
+		if (player.queue.length <= 0) {
+			msg.error(ERROR.MUSIC.NO_SONGS_AVAILABLE);
+			return;
+		}
+
 		player.state === PLAYER_STATE.PAUSED
 			? (() => {
 				player.resume();

@@ -74,6 +74,7 @@ module.exports = {
 	WHITE_FLOWER: '💮',
 	PUSH_PIN: '📌',
 	RAISED_HAND: '✋',
+	THUMBS_UP: '👍',
 	CROWN: '👑',
 	LETTER: {
 		A: '🇦',
