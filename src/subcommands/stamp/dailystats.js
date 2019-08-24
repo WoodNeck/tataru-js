@@ -1,6 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 const StampLog = require('@/model/stamp-log');
 const { STATS, DAILYSTATS } = require('@/constants/commands/stamp');
+const ERROR = require('@/constants/error');
 const COLOR = require('@/constants/color');
 const PERMISSION = require('@/constants/permission');
 const { COOLDOWN } = require('@/constants/type');
@@ -16,12 +17,17 @@ module.exports = {
 		PERMISSION.MANAGE_MESSAGES,
 	],
 	cooldown: COOLDOWN.PER_GUILD(5),
-	execute: async ({ bot, author, guild, channel }) => {
+	execute: async ({ bot, author, guild, channel, msg }) => {
 		if (author.id === global.env.BOT_DEV_USER_ID) {
 			const stamps = await StampLog.find({ time: new Date().toDateString() })
 				.sort({ callCount: -1 })
 				.limit(STATS.MAX_ENTRY)
 				.exec();
+
+			if (!stamps.length) {
+				msg.error(ERROR.STAMP.NO_ENTRY);
+				return;
+			}
 
 			const guildIds = stamps.map(stamp => stamp.guildId);
 			const images = stamps.map(stamp => STATS.ENTRY_IMAGE(stamp.cmd));
@@ -44,6 +50,11 @@ module.exports = {
 			.sort({ callCount: -1 })
 			.limit(STATS.MAX_ENTRY)
 			.exec();
+
+		if (!stamps.length) {
+			msg.error(ERROR.STAMP.NO_ENTRY);
+			return;
+		}
 
 		const images = stamps.map(stamp => STATS.ENTRY_IMAGE(stamp.cmd));
 
