@@ -12,6 +12,7 @@ module.exports = {
 		let configs = await Guild.find().exec();
 		configs = configs.reduce((total, guild) => {
 			total[guild.id] = guild;
+			return total;
 		}, {});
 
 		let guildsStr = '';
