@@ -12,7 +12,7 @@ module.exports = async (cmdName, msg, execTime) => {
 
 	// Update global command data
 	const command = await Command.findOneAndUpdate(
-		{ name: cmdName },
+		{ name: cmdName, time: undefined },
 		{ '$inc': { callCount: 1 } },
 		{ upsert: true, new: true, setDefaultsOnInsert: true }
 	).exec();

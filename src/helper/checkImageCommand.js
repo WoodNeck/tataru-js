@@ -1,6 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 const Directory = require('@/model/directory');
 const Image = require('@/model/image');
+const logStamp = require('@/helper/logStamp');
 const COLOR = require('@/constants/color');
 const { RANDOM } = require('@/constants/commands/stamp');
 
@@ -37,6 +38,7 @@ module.exports = async (bot, msg) => {
 				.setImage(image.url)
 				.setColor(COLOR.BOT)
 		);
+		logStamp(guildId, dirName);
 	}
 	else if (dirName && fileName) {
 		const directory = await Directory.findOne({
@@ -65,5 +67,6 @@ module.exports = async (bot, msg) => {
 				.setImage(image.url)
 				.setColor(COLOR.BOT)
 		);
+		logStamp(guildId, `${dirName} ${fileName}`);
 	}
 };

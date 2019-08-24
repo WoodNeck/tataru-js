@@ -29,4 +29,19 @@ module.exports = {
 	RANDOM: {
 		CMD: '랜덤',
 	},
+	STATS: {
+		CMD: '통계',
+		DESC: '서버의 스탬프 사용 통계를 확인할 수 있다냥!',
+		DAILY: '일일',
+		RESULT_TITLE: guildName => `${guildName}의 스탬프 사용량 통계다냥!`,
+		RESULT_DEV_TITLE: '전체 스탬프 사용량 통계다냥!',
+		RESULT_DEV_DAILY_TITLE: '일일 스탬프 사용량 통계다냥!',
+		ENTRY: (stamp, image) => `${image}: ${stamp.callCount}회`,
+		ENTRY_DEV: (stamp, guild, image) => `${guild}/${image}: ${stamp.callCount}회`,
+		ENTRY_IMAGE: image => `${EMOJI.PICTURE} ${image}`,
+		ENTRY_IMAGE_REMOVED: `${EMOJI.CROSS} 삭제됨`,
+		ENTRY_GUILD: guild => guild.name,
+		ENTRY_GUILD_REMOVED: `${EMOJI.CROSS} 삭제됨`,
+		MAX_ENTRY: 10,
+	},
 };
