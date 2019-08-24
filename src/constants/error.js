@@ -143,4 +143,9 @@ module.exports = {
 	FILE: {
 		NO_DIRECTORY: '디렉토리가 존재하지 않는다냥!',
 	},
+	RANDOM_TEAM: {
+		MEMBER_TOO_SMALL: '최소한 2명 이상의 플레이어가 있어야 한다냥!',
+		MAX_TEAM_NOT_PROPER: '숫자 하나만 달라냥! 예) 4',
+		USER_DID_NOT_SEND_MSG: '나눌 팀 수를 받지 못해서 팀나누기를 종료한다냥!',
+	},
 };

@@ -66,4 +66,22 @@ module.exports = {
 		USAGE: '길드_아이디/채널_아이디 메시지',
 		PROMPT_TIME: 60,
 	},
+	RANDOM_TEAM: {
+		CMD: '랜덤팀',
+		DESC: '지원자들을 랜덤하게 n개의 팀으로 나눠준다냥!',
+		USAGE: '파티명(optional)',
+		COLLECT_TITLE: partyName => partyName ? `"${partyName.replace('\n', '')}" 파티를 모집한다냥!` : '파티를 모집한다냥!',
+		COLLECT_DESC: dedent`
+			파티에 참가하려면 ${EMOJI.RAISED_HAND} 버튼을 눌러달라냥!
+			파티 생성자는 ${EMOJI.GREEN_CHECK} 버튼을 눌러 파티원 모집을 마감할 수 있다냥!
+			파티원 모집은 최대 한시간 동안 이루어진다냥!`,
+		COLLECT_FOOTER: num => `현재 참여인원: ${num}명`,
+		COLLECT_TIME: 60,
+		MAX_TEAM_TITLE: num => `총 ${num}명의 파티원이 모였다냥! 파티원들을 몇 팀으로 나눌거냥?`,
+		MAX_TEAM_DESC: max => `숫자를 하나 말해달라냥! (최대 ${max}팀까지 나눌 수 있다냥!)`,
+		MAX_TEAM_TIME: 10,
+		RESULT_TITLE: partyName => partyName ? `"${partyName.replace('\n', '')}" 파티의 팀나누기 결과다냥!` : '팀나누기 결과다냥!',
+		RESULT_FOOTER: `${EMOJI.CROWN}이 붙은 사람이 팀장이다냥!`,
+		RESULT_FIELD_TITLE: index => `${EMOJI.SMALL_BLUE_DIAMOND} 팀 ${index + 1}`,
+	},
 };
