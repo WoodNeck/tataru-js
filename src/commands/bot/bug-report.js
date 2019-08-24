@@ -33,7 +33,7 @@ module.exports = {
 		}
 
 		embed.title = undefined;
-		embed.setAuthor(`${author.user.username}(${author.user.id})`, author.user.avatarURL());
+		embed.setAuthor(`${author.user.tag}(${author.user.id})`, author.user.avatarURL());
 		embed.setFooter(`${guild.name}(${guild.id}/${channel.id})`, guild.iconURL());
 
 		await bugChannel.send(embed);
