@@ -99,7 +99,11 @@ module.exports = {
 		CANT_FIND_MSG: '메시지를 하나도 가져오지 못했다냥! 다시 시도해달라냥!',
 	},
 	STEAM: {
-		USER_NOT_FOUND: '그 아이디로는 유저를 찾지 못했다냥!',
+		USER_NOT_FOUND: dedent`
+			그 아이디로는 유저를 찾지 못했다냥!
+			아이디는 스팀 프로필에서 ${strong('우클릭 => URL 복사')}해서 찾을 수 있다냥!
+			${block(dedent`https://steamcommunity.com/id/woodneck/ => "woodneck"이 id다냥!
+			https://steamcommunity.com/profiles/76561198024225718/ => "76561198024225718"이 id다냥!`)}`,
 		EMPTY_GAMES: '계정이 비공개거나 가진 게임이 하나도 없다냥!',
 	},
 	NSFW: {
@@ -150,5 +154,8 @@ module.exports = {
 		MEMBER_TOO_SMALL: '최소한 2명 이상의 플레이어가 있어야 한다냥!',
 		MAX_TEAM_NOT_PROPER: '숫자 하나만 달라냥! 예) 4',
 		USER_DID_NOT_SEND_MSG: '나눌 팀 수를 받지 못해서 팀나누기를 종료한다냥!',
+	},
+	STAMP: {
+		NO_ENTRY: '스탬프가 한번도 사용되지 않은 것 같다냥!',
 	},
 };
