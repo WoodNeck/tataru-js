@@ -30,16 +30,19 @@ module.exports = {
 		const willSend = await prompt(embedContent, channel, author, ANNOUNCE.PROMPT_TIME);
 		if (!willSend) return;
 
-		const guildSettings = await Guild.find().exec();
+		let configs = await Guild.find().exec();
+		configs = configs.reduce((total, guild) => {
+			total[guild.id] = guild;
+		}, {});
 
 		const guilds = bot.guilds;
 		guilds.forEach(guild => {
-			const setting = guildSettings.find(el => el.id === guild.id);
-			if (setting && !setting.listenAnnounce) return;
+			const config = configs[guild.id];
+			if (config && !config.listenAnnounce) return;
 
 			let channelToSend = guild.systemChannel;
-			if (setting && setting.announceChannel) {
-				channelToSend = guild.channels.get(setting.announceChannel);
+			if (config && config.announceChannel) {
+				channelToSend = guild.channels.get(config.announceChannel);
 			}
 			// Fallback, get first channel that bot can send message
 			if (!channelToSend) {
