@@ -52,8 +52,7 @@
     "remove-markdown": "^0.3.0",
     "to-readable-stream": "^1.0.0",
     "unescape": "^1.0.1",
-    "zlib-sync": "^0.1.4",
-    "zucc": "^0.1.2"
+    "zlib-sync": "^0.1.4"
   },
   "_moduleAliases": {
     "@": "src"
