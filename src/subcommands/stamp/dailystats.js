@@ -1,13 +1,13 @@
 const { MessageEmbed } = require('discord.js');
 const StampLog = require('@/model/stamp-log');
-const { STATS } = require('@/constants/commands/stamp');
+const { STATS, DAILYSTATS } = require('@/constants/commands/stamp');
 const COLOR = require('@/constants/color');
 const PERMISSION = require('@/constants/permission');
 const { COOLDOWN } = require('@/constants/type');
 
 module.exports = {
-	name: STATS.CMD,
-	description: STATS.DESC,
+	name: DAILYSTATS.CMD,
+	description: DAILYSTATS.DESC,
 	hidden: false,
 	devOnly: false,
 	permissions: [
@@ -18,7 +18,7 @@ module.exports = {
 	cooldown: COOLDOWN.PER_GUILD(5),
 	execute: async ({ bot, author, guild, channel }) => {
 		if (author.id === global.env.BOT_DEV_USER_ID) {
-			const stamps = await StampLog.find({ time: undefined })
+			const stamps = await StampLog.find({ time: new Date().toDateString() })
 				.sort({ callCount: -1 })
 				.limit(STATS.MAX_ENTRY)
 				.exec();
@@ -32,7 +32,7 @@ module.exports = {
 			});
 
 			const resultEmbed = new MessageEmbed()
-				.setTitle(STATS.RESULT_DEV_TITLE)
+				.setTitle(DAILYSTATS.RESULT_DEV_TITLE)
 				.setDescription(stamps.map((stamp, index) => STATS.ENTRY_DEV(stamp, guilds[index], images[index])).join('\n'))
 				.setColor(COLOR.WHITE);
 			channel.send(resultEmbed);
@@ -40,7 +40,7 @@ module.exports = {
 		}
 
 		channel.startTyping();
-		const stamps = await StampLog.find({ guildId: guild.id, time: undefined })
+		const stamps = await StampLog.find({ guildId: guild.id, time: new Date().toDateString() })
 			.sort({ callCount: -1 })
 			.limit(STATS.MAX_ENTRY)
 			.exec();
@@ -48,7 +48,7 @@ module.exports = {
 		const images = stamps.map(stamp => STATS.ENTRY_IMAGE(stamp.cmd));
 
 		const resultEmbed = new MessageEmbed()
-			.setTitle(STATS.RESULT_TITLE(guild.name))
+			.setTitle(DAILYSTATS.RESULT_TITLE(guild.name))
 			.setDescription(stamps.map((stamp, index) => STATS.ENTRY(stamp, images[index])).join('\n'))
 			.setColor(COLOR.BOT);
 		channel.send(resultEmbed);
