@@ -40,7 +40,7 @@ module.exports = {
 	},
 	GUILDLIST: {
 		CMD: '서버목록',
-		GUILD_ENTRY: (guild, config) => `${guild.systemChannel ? EMOJI.GREEN_CHECK : EMOJI.CROSS}${config && config.listenAnnounce ? EMOJI.GREEN_CHECK : EMOJI.CROSS} - ${guild.name}(${guild.members.filter(member => !member.user.bot).size}명)`,
+		GUILD_ENTRY: (guild, config) => `${guild.systemChannel ? EMOJI.GREEN_CHECK : EMOJI.CROSS}${!config || config.listenAnnounce ? EMOJI.GREEN_CHECK : EMOJI.CROSS} - ${guild.name}(${guild.members.filter(member => !member.user.bot).size}명)`,
 	},
 	STATS: {
 		CMD: '통계',
