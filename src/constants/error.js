@@ -58,6 +58,7 @@ module.exports = {
 		EMPTY_RESULT: target => `그 검색어로는 ${target}${Josa.c(target, '을/를')} 하나도 찾을수가 없었다냥!`,
 		FAILED: '데이터 취득에 실패했다냥!',
 		USER_NOT_FOUND: '유저를 찾을 수 없었다냥!',
+		SOMETHING_WRONG: target => `${Josa.r(target, '을/를')} 가져오는 도중에 오류가 발생했다냥!`,
 	},
 	MUSIC: {
 		TYPE_NOT_DEFINED: type => `"${type}" -> 등록되지 않은 음악 타입이다냥!`,
@@ -78,6 +79,7 @@ module.exports = {
 			유튜브 재생목록: https://www.youtube.com/playlist?list=재생목록_아이디
 			유튜브 재생목록(2): https://www.youtube.com/watch?v=XXX&list=재생목록_아이디
 			또는 일반 검색어도 가능하다냥!`)}`,
+		NOT_PLAYING: '재생하고 있는 곡이 없다냥!',
 		SOMETHING_WRONG_HAPPEND: song => `${Josa.r(song.title, '을/를')} 재생하는 도중에 오류가 발생했다냥!`,
 		FAILED_TO_PLAY: '재생에 실패했다냥!',
 		CANNOT_SKIP: '아직 스킵할 수 없다냥!',

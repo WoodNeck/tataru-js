@@ -1,6 +1,6 @@
 const dedent = require('@/utils/dedent');
 const EMOJI = require('@/constants/emoji');
-const { strong, code, strike } = require('@/utils/markdown');
+const { strong, strike } = require('@/utils/markdown');
 
 
 module.exports = {
@@ -37,7 +37,6 @@ module.exports = {
 		RECITAL_TIME: 30,
 		MAX_RESULTS: 10,
 		VIDEO_URL: videoId => `https://youtu.be/${videoId}`,
-		VIDEO_URL_WITH_TIME: (videoId, videoLength) => `https://youtu.be/${videoId} ${code(videoLength)}`,
 		API_SEARCH_URL: endpoint => `https://www.googleapis.com/youtube/v3/${endpoint}`,
 	},
 	KIN: {

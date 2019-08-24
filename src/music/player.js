@@ -128,6 +128,7 @@ module.exports = class Player {
 				: this._outOnFinish && this.end();
 		};
 
+		let skipped = false;
 		const stream = await song.createStream()
 			.catch(err => {
 				this._textChannel.send(ERROR.MUSIC.SOMETHING_WRONG_HAPPEND(this.currentSong));
@@ -135,10 +136,17 @@ module.exports = class Player {
 					.setTitle(ERROR.MUSIC.SOMETHING_WRONG_HAPPEND(this.currentSong))
 					.setDescription(err)
 					.send();
+				if (!skipped) {
+					playNext(false);
+					skipped = true;
+				}
 			});
 
 		if (!stream) {
-			playNext(false);
+			if (!skipped) {
+				playNext(false);
+				skipped = true;
+			}
 			return;
 		}
 

@@ -1,5 +1,4 @@
-const axios = require('axios');
-const YouTube = require('simple-youtube-api');
+const { google } = require('googleapis');
 const Song = require('@/music/song');
 const Recital = require('@/utils/recital');
 const { StringPage } = require('@/utils/page');
@@ -7,19 +6,14 @@ const { aquirePlayer } = require('@/music/helper');
 const ERROR = require('@/constants/error');
 const EMOJI = require('@/constants/emoji');
 const PERMISSION = require('@/constants/permission');
-const FORMAT = require('@/constants/format');
 const { YOUTUBE } = require('@/constants/commands/search');
 const { RECITAL_END, MUSIC_TYPE, COOLDOWN } = require('@/constants/type');
 
 
-const api = new YouTube(global.env.GOOGLE_API_KEY);
-// Override dependency's make function to support escaping characters like '#'
-api.request.make = function(endpoint, qs = {}) {
-	qs = Object.assign({ key: this.youtube.key }, qs);
-	return axios.get(YOUTUBE.API_SEARCH_URL(endpoint), {
-		params: qs,
-	}).then(body => body.data);
-};
+const api = google.youtube({
+	version: 'v3',
+	auth: global.env.GOOGLE_API_KEY,
+});
 
 module.exports = {
 	name: YOUTUBE.CMD,
@@ -45,34 +39,34 @@ module.exports = {
 		channel.startTyping();
 
 		const searchText = content;
-		let videos = await api.searchVideos(
-			searchText,
-			YOUTUBE.MAX_RESULTS
-		);
+		const videos = await api.search.list({
+			part: 'snippet',
+			q: searchText,
+			maxResults: YOUTUBE.MAX_RESULTS,
+		}).then(res => res.data.items)
+			.catch(e => {
+				bot.logger.error(e, msg);
+			});
+
+		if (!videos) {
+			msg.error(ERROR.SEARCH.SOMETHING_WRONG(YOUTUBE.TARGET));
+			return;
+		}
 
 		if (!videos.length) {
 			msg.error(ERROR.SEARCH.EMPTY_RESULT(YOUTUBE.TARGET));
 			return;
 		}
 
-		const getVideoDetail = async video => video.fetch();
-		const getAllVideoDetails = videos.map(video => getVideoDetail(video));
-
-		videos = await Promise.all(getAllVideoDetails);
-
 		const recital = new Recital(bot, msg);
 		const pages = videos.map(video => {
-			const videoLengthStr = video.duration
-				? FORMAT.MUSIC_LENGTH(video.duration)
-				: YOUTUBE.TIME_NOT_DEFINED;
-
 			return new StringPage()
-				.setTitle(YOUTUBE.VIDEO_URL_WITH_TIME(video.id, videoLengthStr))
+				.setTitle(YOUTUBE.VIDEO_URL(video.id.videoId))
 				.setData(new Song(
-					YOUTUBE.VIDEO_URL(video.id),
+					YOUTUBE.VIDEO_URL(video.id.videoId),
 					MUSIC_TYPE.YOUTUBE,
-					video.title,
-					video.duration,
+					video.snippet.title,
+					null,
 					author
 				));
 		});

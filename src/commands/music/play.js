@@ -20,7 +20,7 @@ module.exports = {
 		PERMISSION.SPEAK,
 	],
 	execute: async context => {
-		const { author, content, msg, channel } = context;
+		const { bot, author, content, msg, channel } = context;
 		if (!content.length) {
 			msg.error(ERROR.MUSIC.NOT_RESOLVABLE);
 			return;
@@ -34,62 +34,86 @@ module.exports = {
 		// Playlist
 		if (ytPlaylistRegex.test(content)) {
 			const playlistId = content.match(ytPlaylistRegex)[1];
-			const playlist = await Youtube.api.getPlaylistByID(playlistId)
-				.then(data => data)
-				.catch(() => undefined);
+			const getPlaylistInfo = Youtube.api.playlists.list({
+				part: 'snippet',
+				id: playlistId,
+			}).then(res => res.data.items)
+				.catch(e => {
+					bot.logger.error(e, msg);
+				});
 
-			if (!playlist) {
+			const getPlaylist = Youtube.api.playlistItems.list({
+				part: 'snippet',
+				playlistId,
+				maxResults: PLAY.PLAYLIST_MAX_RESULT,
+			}).then(res => res.data)
+				.catch(e => {
+					bot.logger.error(e, msg);
+				});
+
+			const [playlistInfo, playlist] = await Promise.all([getPlaylistInfo, getPlaylist]);
+
+			if (!playlistInfo || !playlist) {
+				msg.error(ERROR.SEARCH.SOMETHING_WRONG(PLAY.PLAYLIST));
+				return;
+			}
+			if (!playlistInfo.length || !playlist.items.length) {
 				msg.error(ERROR.SEARCH.EMPTY_RESULT(PLAY.PLAYLIST));
 				return;
 			}
 
-			let videos = await playlist.getVideos();
-			const getVideoDetail = async video => video.fetch();
-			const getAllVideoDetails = videos.map(video => getVideoDetail(video));
-
-			videos = await Promise.all(getAllVideoDetails);
-			const songs = videos.map(video => new Song(
-				YOUTUBE.VIDEO_URL(video.id),
+			const songs = playlist.items.map(video => new Song(
+				YOUTUBE.VIDEO_URL(video.snippet.resourceId.videoId),
 				MUSIC_TYPE.YOUTUBE,
-				video.title,
-				video.duration,
+				video.snippet.title,
+				null,
 				author
 			));
 
 			const player = await aquirePlayer(context);
 			if (player) {
 				await player.enqueueList({
-					title: playlist.title,
+					title: playlistInfo[0].snippet.localized.title,
 					length: songs.length,
 					songs: songs,
 				}, channel);
 			}
+
+			return;
 		}
 		// Single video
 		else if (ytVideoRegex.test(content)) {
 			// Video check should be after playlist test
 			// As playlist url typed https://www.youtube.com/watch?v=VIDEO_ID&list=LIST_ID
 			// Which can be handled both in video/playlist
-			const video = await Youtube.api.getVideo(content)
-				.then(data => data)
-				.catch(() => undefined);
-			if (!video) {
+			const videoId = content.match(ytVideoRegex)[1];
+			const videos = await Youtube.api.videos.list({
+				part: 'snippet',
+				id: videoId,
+				maxResults: 1,
+			}).then(res => res.data.items)
+				.catch(e => {
+					bot.logger.error(e, msg);
+				});
+
+			if (!videos) {
+				msg.error(ERROR.SEARCH.SOMETHING_WRONG(YOUTUBE.TARGET));
+				return;
+			}
+
+			if (!videos.length) {
 				msg.error(ERROR.SEARCH.EMPTY_RESULT(YOUTUBE.TARGET));
 				return;
 			}
 
-			if (isStream(video)) {
-				msg.error(ERROR.MUSIC.CANNOT_PLAY_STREAMING);
-				return;
-			}
-
+			const video = videos[0];
 			const player = await aquirePlayer(context);
 			if (player) {
 				const song = new Song(
 					YOUTUBE.VIDEO_URL(video.id),
 					MUSIC_TYPE.YOUTUBE,
-					video.title,
-					video.duration,
+					video.snippet.localized.title,
+					null,
 					author
 				);
 				await player.enqueue(song, channel);
@@ -98,31 +122,33 @@ module.exports = {
 		// First video of youtube search
 		else {
 			const searchText = content;
-			let video = (await Youtube.api.searchVideos(
-				searchText,
-				// We need only 1 video to play
-				1,
-			))[0];
+			const videos = await Youtube.api.search.list({
+				part: 'snippet',
+				q: searchText,
+				maxResults: 1,
+			}).then(res => res.data.items)
+				.catch(e => {
+					bot.logger.error(e, msg);
+				});
 
-			if (!video) {
+			if (!videos) {
+				msg.error(ERROR.SEARCH.SOMETHING_WRONG(YOUTUBE.TARGET));
+				return;
+			}
+
+			if (!videos.length) {
 				msg.error(ERROR.SEARCH.EMPTY_RESULT(YOUTUBE.TARGET));
 				return;
 			}
 
-			// Fetch the full representation of this video.
-			video = await video.fetch();
-			if (isStream(video)) {
-				msg.error(ERROR.MUSIC.CANNOT_PLAY_STREAMING);
-				return;
-			}
-
+			const video = videos[0];
 			const player = await aquirePlayer(context);
 			if (player) {
 				const song = new Song(
-					YOUTUBE.VIDEO_URL(video.id),
+					YOUTUBE.VIDEO_URL(video.id.videoId),
 					MUSIC_TYPE.YOUTUBE,
-					video.title,
-					video.duration,
+					video.snippet.title,
+					null,
 					author
 				);
 				await player.enqueue(song, channel);
@@ -131,5 +157,3 @@ module.exports = {
 		}
 	},
 };
-
-const isStream = video => video.raw.snippet.liveBroadcastContent === 'live';
