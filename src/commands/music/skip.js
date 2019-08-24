@@ -14,7 +14,7 @@ module.exports = {
 			return;
 		}
 		const player = bot.players.get(guild.id);
-		if (player.queue.length <= 0) {
+		if (!player.currentSong) {
 			msg.error(ERROR.MUSIC.NO_SONGS_AVAILABLE);
 			return;
 		}
