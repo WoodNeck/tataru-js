@@ -23,6 +23,11 @@ module.exports = {
 			.setDescription(`${content}\n\n${ANNOUNCE.FOOTER}`)
 			.setColor(COLOR.BOT)
 			.setFooter(author.user.tag, author.user.avatarURL());
+
+		if (msg.attachments.size > 0) {
+			embedContent.setImage(msg.attachments.first().url);
+		}
+
 		const textContent = dedent`
 			${ANNOUNCE.MESSAGE_TITLE}
 			${content}`;
