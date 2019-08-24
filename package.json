@@ -20,6 +20,7 @@
     "eslint": "^5.8.0"
   },
   "dependencies": {
+    "@discordjs/uws": "^11.149.1",
     "@google-cloud/text-to-speech": "^0.4.0",
     "@k3rn31p4nic/google-translate-api": "github:k3rn31p4nic/google-translate-api",
     "axios": "^0.18.0",
@@ -31,7 +32,7 @@
     "date-and-time": "^0.6.3",
     "date-diff": "^0.2.1",
     "dblapi.js": "^2.3.0",
-    "discord.js": "discordjs/discord.js",
+    "discord.js": "github:discordjs/discord.js",
     "erlpack": "discordapp/erlpack",
     "express": "^4.16.4",
     "express-async-errors": "^3.1.1",
@@ -44,14 +45,15 @@
     "module-alias": "^2.1.0",
     "mongoose": "^5.3.12",
     "node-cache": "^4.2.0",
-    "node-opus": "^0.2.7",
+    "node-opus": "0.3.1",
     "prism-media": "^1.0.1",
     "remove-markdown": "^0.3.0",
     "simple-youtube-api": "^5.2.1",
     "to-readable-stream": "^1.0.0",
     "unescape": "^1.0.1",
     "ytdl-core-discord": "^1.0.3",
-    "zlib-sync": "^0.1.4"
+    "zlib-sync": "^0.1.4",
+    "zucc": "^0.1.2"
   },
   "_moduleAliases": {
     "@": "src"

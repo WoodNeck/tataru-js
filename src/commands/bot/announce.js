@@ -5,7 +5,7 @@ const Guild = require('@/model/guild');
 const COLOR = require('@/constants/color');
 const ERROR = require('@/constants/error');
 const PERMISSION = require('@/constants/permission');
-const { ANNOUNCE } = require('@/constants/commands/utility');
+const { ANNOUNCE } = require('@/constants/commands/bot');
 
 
 module.exports = {

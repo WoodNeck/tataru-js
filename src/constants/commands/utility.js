@@ -30,47 +30,6 @@ module.exports = {
 		USAGE: '따라할 문장',
 		TARGET: '따라할 문장',
 	},
-	ANNOUNCE: {
-		CMD: '공지',
-		MESSAGE_TITLE: `${EMOJI.LOUD_SPEAKER} 공지사항이 도착했다냥!`,
-		PROMPT_TIME: 30,
-		FOOTER: dedent`
-			${EMOJI.SMALL_WHITE_SQUARE}\`${EMOJI.LOUD_SPEAKER}공지수신\`을 통해 공지사항 수신 여부를 설정하실 수 있습니다.
-			${EMOJI.SMALL_WHITE_SQUARE}\`${EMOJI.LOUD_SPEAKER}공지채널\`을 통해 공지사항 수신 채널을 설정하실 수 있습니다.
-			${EMOJI.SMALL_WHITE_SQUARE}\`${EMOJI.WRENCH}개발서버\`에 참가해보세요! ${global.env.BOT_DEV_SERVER_INVITE}`,
-	},
-	ANNOUNCE_CHANNEL: {
-		CMD: '공지채널',
-		DESC: '현재 채널을 공지사항을 받는 채널으로 설정한다냥!',
-		MSG_SET: channel => `${channel.toString()}${Josa.c(channel.name, '을/를')} 이 서버의 공지채널으로 설정했다냥!`,
-		MSG_DELETE: '이 서버의 공지채널을 제거했다냥!',
-	},
-	ANNOUNCE_LISTEN: {
-		CMD: '공지수신',
-		DESC: '현재 서버의 공지 수신 여부를 설정한다냥!',
-		MSG_ABLE: '공지 메시지를 받도록 설정했다냥!',
-		MSG_DISABLE: '이제 더 이상 공지 메시지를 받지 않는다냥!',
-	},
-	BUG_REPORT: {
-		CMD: '버그제보',
-		DESC: '개발서버로 봇의 버그를 제보한다냥!',
-		USAGE: '버그내용(자세히)',
-		TARGET: '말할 내용',
-		TITLE_CONFIRM: '이렇게 제보하면 되겠냥?',
-		MSG_SUCCESS: `${EMOJI.GREEN_CHECK} 개발서버로 버그를 제보했다냥!`,
-		MSG_CANCEL: `${EMOJI.CROSS} 메시지 전송을 취소했다냥`,
-		PROMPT_TIME: 30,
-	},
-	FEATURE_REQUEST: {
-		CMD: '기능제안',
-		DESC: '개발서버에 봇의 기능을 제안한다냥!',
-		USAGE: '기능(자세히)',
-		TARGET: '말할 내용',
-		TITLE_CONFIRM: '이렇게 제안하면 되겠냥?',
-		MSG_SUCCESS: `${EMOJI.GREEN_CHECK} 개발서버로 기능을 제안했다냥!`,
-		MSG_CANCEL: `${EMOJI.CROSS} 메시지 전송을 취소했다냥`,
-		PROMPT_TIME: 30,
-	},
 	VOTE: {
 		CMD: '투표',
 		DESC: '채널 내에서 간단한 투표를 할 수 있다냥!',
