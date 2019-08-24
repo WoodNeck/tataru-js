@@ -22,6 +22,8 @@ class Bot extends Discord.Client {
 		this._permissions.add(PERMISSION.SEND_MESSAGES.flag);
 		// Cooldowns, per type
 		this._cooldowns = new Discord.Collection();
+		// Last msg user sent
+		this._lastMsg = null;
 		// Discord bot lists
 		if (global.env.DBL_KEY) {
 			this._dbl = new DBL(global.env.DBL_KEY, this);
@@ -54,6 +56,8 @@ class Bot extends Discord.Client {
 	get players() { return this._players; }
 	get permissions() { return this._permissions; }
 	get cooldowns() { return this._cooldowns; }
+	get lastMsg() { return this._lastMsg; }
+	set lastMsg(val) { this._lastMsg = val; }
 
 	// Used in ready event
 	_setLogger() {

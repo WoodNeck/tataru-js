@@ -144,6 +144,8 @@ const onMessage = async function(msg) {
 			return;
 		}
 		const cmdTimeStart = new Date().getTime();
+		this.lastMsg = msg;
+
 		await cmd.execute({
 			bot: this,
 			msg: msg,
@@ -178,7 +180,7 @@ const onGuildJoin = function(guild) {
 const onError = function(err) {
 	// Known error
 	if (err.message === 'read ECONNRESET') return;
-	this.logger.error(err);
+	this.logger.error(err, this.lastMsg);
 };
 
 const onWarning = function(info) {
