@@ -34,7 +34,7 @@ module.exports = {
 		const reactionFilter = (reaction, user) => {
 			if (buttonEmojis.every(emoji => emoji !== reaction.emoji.name)) return false;
 			if (user.bot) return false;
-			if (reaction.emoji === EMOJI.GREEN_CHECK && user.id !== author.id) false;
+			if (reaction.emoji.name === EMOJI.GREEN_CHECK && user.id !== author.id) return false;
 
 			return true;
 		};
