@@ -126,6 +126,7 @@ module.exports = {
 				part: 'snippet',
 				q: searchText,
 				maxResults: 1,
+				type: 'video',
 			}).then(res => res.data.items)
 				.catch(e => {
 					bot.logger.error(e, msg);

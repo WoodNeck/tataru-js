@@ -43,6 +43,7 @@ module.exports = {
 			part: 'snippet',
 			q: searchText,
 			maxResults: YOUTUBE.MAX_RESULTS,
+			type: 'video',
 		}).then(res => res.data.items)
 			.catch(e => {
 				bot.logger.error(e, msg);
