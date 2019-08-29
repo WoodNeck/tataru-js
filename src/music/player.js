@@ -123,9 +123,15 @@ module.exports = class Player {
 
 			if (shouldLoop) this._queue.push(oldSong);
 
-			this._queue.length > 0
-				? setImmediate(() => this._playNextSong())
-				: this._outOnFinish && this.end();
+			if (this._queue.length > 0) {
+				setImmediate(() => this._playNextSong());
+			}
+			else if (this._outOnFinish) {
+				this.end();
+			}
+			else {
+				this._state = PLAYER_STATE.INIT;
+			}
 		};
 
 		let skipped = false;
