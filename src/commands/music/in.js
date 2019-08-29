@@ -12,8 +12,10 @@ module.exports = {
 	],
 	execute: async (context) => {
 		context.channel.startTyping();
-		await aquirePlayer(context);
-		context.msg.react(EMOJI.THUMBS_UP);
+		const player = await aquirePlayer(context);
+		if (player) {
+			context.msg.react(EMOJI.THUMBS_UP);
+		}
 		context.channel.stopTyping();
 	},
 };
